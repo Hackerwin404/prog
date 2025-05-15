@@ -1,7 +1,7 @@
 '''Модуль содержит интерактивный графикопостроитель'''
 import tkinter as tk
 from math import *
-
+#123
 class GraphDrawer:
     def __init__(self, root, width=1000, height=800, center_x=None, center_y=None, scale=10):
         self.root = root
