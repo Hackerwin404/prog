@@ -1,3 +1,6 @@
+'''
+Модуль содержит текстовый редактор.
+'''
 import tkinter as tk
 from tkinter import filedialog, font, messagebox, Menu, Scrollbar
 
@@ -5,11 +8,10 @@ class TextEditor(tk.Tk):
     def __init__(self):
         super().__init__()
 
-        # Настройка окна приложения
         self.title("Текстовый редактор")
         self.geometry('800x600')
 
-        # Текущий открытый файл (None изначально)
+        # Текущий открытый файл
         self.current_filename = None
 
         # Главное меню
@@ -71,18 +73,18 @@ class TextEditor(tk.Tk):
         hscroll.grid(row=1, column=0, sticky="ew")
         vscroll.grid(row=0, column=1, sticky="ns")
 
-        # Глобально настраиваем Grid-стратегию растяжения
+        # Настраиваем Grid растяжение
         main_frame.grid_rowconfigure(0, weight=1)
         main_frame.grid_columnconfigure(0, weight=1)
 
-        # Привязываем обработчики клавиш через ключевые коды
+        # Обработка клавиш через ключевые коды
         self.bind_all('<KeyPress>', self.handle_keypress)
 
     def handle_keypress(self, event):
         """Универсальный обработчик горячих клавиш."""
         # Получаем код нажатой клавиши
         key_code = event.keycode
-        ctrl_pressed = event.state & 0x4 != 0  # Проверяем наличие модификатора Control
+        ctrl_pressed = event.state & 0x4 != 0  # Проверяем нажатие Control
 
         # Определение конкретных клавиш через их числовые коды
         if ctrl_pressed:
@@ -143,15 +145,14 @@ class TextEditor(tk.Tk):
         filename = filedialog.asksaveasfilename(initialfile=initial_name, defaultextension=".txt",
                                                filetypes=(("Текстовые файлы", "*.txt"), ("Все файлы", "*.*")))
         if not filename:
-            return
-        with open(filename, 'w', encoding='utf-8') as f:
-            text_to_save = self.text_area.get('1.0', tk.END)
-            f.write(text_to_save)
-        self.current_filename = filename
-        self.update_title()
+            with open(filename, 'w', encoding='utf-8') as f:
+                text_to_save = self.text_area.get('1.0', tk.END)
+                f.write(text_to_save)
+            self.current_filename = filename
+            self.update_title()
 
     def clear_editor(self):
-        """Очистка текущего состояния редактора."""
+        """Очистка текста."""
         self.text_area.delete('1.0', tk.END)
         self.current_filename = None
         self.update_title()
@@ -183,7 +184,7 @@ class TextEditor(tk.Tk):
         button_replace.grid(row=2, columnspan=2)
 
     def search(self, pattern):
-        """Осуществляет поиск заданного фрагмента текста."""
+        """Осуществляет поиск текста."""
         pos = self.text_area.search(pattern, "insert", stopindex=tk.END)
         if pos:
             endpos = f"{pos}+{len(pattern)}c"
@@ -196,7 +197,7 @@ class TextEditor(tk.Tk):
             messagebox.showinfo("Поиск", "Текст не найден.")
 
     def replace(self, old_pattern, new_pattern):
-        """Реализация функции замены текста."""
+        """Функция замены текста."""
         pos = self.text_area.search(old_pattern, "insert", stopindex=tk.END)
         if pos:
             endpos = f"{pos}+{len(old_pattern)}c"
@@ -215,7 +216,7 @@ class TextEditor(tk.Tk):
         self.tk.call("tk", "fontchooser", "show")
 
     def font_changed(self, new_font):
-        """Изменяет шрифт в области редактирования."""
+        """Изменяет шрифт."""
         self.text_area.configure(font=new_font)
 
     def increase_zoom(self):
