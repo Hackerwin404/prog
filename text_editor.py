@@ -113,7 +113,7 @@ class TextEditor(tk.Tk):
         """Обновляет заголовок окна с именем файла."""
         title = "Текстовый редактор"
         if self.current_filename:
-            title += f" — {self.current_filename.split('/')[-1].split('\\')[-1]}"
+            title += f" — {self.current_filename.split('/')[-1]}"
         self.title(title)
 
     def open_file(self):
