@@ -51,8 +51,8 @@ class TextEditor(tk.Tk):
 
         # Меню "Вид"
         view_menu = tk.Menu(menubar, tearoff=False)
-        view_menu.add_command(label="Масштаб увеличить", accelerator="+", command=self.increase_zoom)
-        view_menu.add_command(label="Масштаб уменьшить", accelerator="-", command=self.decrease_zoom)
+        view_menu.add_command(label="Масштаб увеличить", command=self.increase_zoom)
+        view_menu.add_command(label="Масштаб уменьшить", command=self.decrease_zoom)
         menubar.add_cascade(label="Вид", menu=view_menu)
 
         self.config(menu=menubar)
@@ -130,7 +130,7 @@ class TextEditor(tk.Tk):
 
     def save_file(self):
         """Сохранение файла (только если файл уже открыт)."""
-        if self.current_filename is None:
+        if self.current_filename == None:
             self.save_as_file()
         else:
             with open(self.current_filename, 'w', encoding='utf-8') as f:
@@ -144,7 +144,7 @@ class TextEditor(tk.Tk):
             initial_name = self.current_filename.split("/")[-1].split("\\")[-1]
         filename = filedialog.asksaveasfilename(initialfile=initial_name, defaultextension=".txt",
                                                filetypes=(("Текстовые файлы", "*.txt"), ("Все файлы", "*.*")))
-        if not filename:
+        if filename:
             with open(filename, 'w', encoding='utf-8') as f:
                 text_to_save = self.text_area.get('1.0', tk.END)
                 f.write(text_to_save)
